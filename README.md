@@ -112,7 +112,7 @@ http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues
 <style name="AppTheme.Widget"/>
 
 <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
-    <item name="android:fontFamily">fonts/Roboto-ThinItalic.ttf</item>
+    <item name="android:fontFamily">@fonts/roboto_thinitalic</item>
 </style>
 ```
 
