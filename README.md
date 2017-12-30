@@ -1,38 +1,31 @@
-Calligraphy
-===========
+DownloadableCalligraphy
+=======================
 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Calligraphy-blue.svg?style=flat)](http://android-arsenal.com/details/1/163)
+This library provides a way to set default (downloadable) fonts using [Calligraphy](https://github.com/chrisjenx/Calligraphy) methods.
 
-Custom fonts in Android an OK way.
-
-Are you fed up of Custom Views to set fonts? Or traversing the ViewTree to find TextViews? Yeah me too.
-
-![alt text](https://github.com/chrisjenx/Calligraphy/raw/master/screenshot.png "ScreenShot Of Font Samples")
+# Credit
+This library based on chrisjenx/Calligraphy
+https://github.com/chrisjenx/Calligraphy
+Support Library
+https://source.android.com/setup/licenses
 
 ## Getting started
 
 ### Dependency
 
-Include the dependency [Download (.aar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/2.2.0/calligraphy-2.2.0.aar) :
+Coming soon
 
-```groovy
-dependencies {
-    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
-}
-```
 ### Add Fonts
 
-Add your custom fonts to `assets/`. All font definitions are relative to this path.
+Add your custom fonts to `fonts/`. All font definitions are relative to this path.
 
-Assuming that you are using Gradle you should create the assets directory under `src/main/` in your project directory if it does not already exist.
-As it's popular to use multi-project build with Gradle the path is usually `app/src/main/assets/`, where `app` is the project name.
-
-You might consider creating a `fonts/` subdirectory in the assets directory (as in examples).
+Assuming that you are using Gradle you should create the fonts directory under `src/main/` in your project directory if it does not already exist.
+As it's popular to use multi-project build with Gradle the path is usually `app/src/main/fonts/`, where `app` is the project name.
 
 ### Usage
 
 ```xml
-<TextView fontPath="fonts/MyFont.ttf"/>
+<TextView android:fontFamily="@fonts/my_font"/>
 ``` 
 **Note: The missing namespace, this __IS__ intentional.**
 
@@ -45,16 +38,12 @@ Define your default font using `CalligraphyConfig`, in your `Application` class 
 public void onCreate() {
     super.onCreate();
     CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                            .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
-                            .setFontAttrId(R.attr.fontPath)
+                            .setDefaultFontPath(R.font.roboto_regular)
                             .build()
             );
     //....
 }
 ```
-
-_Note: You don't need to define `CalligraphyConfig` but the library will apply
-no default font and use the default attribute of `R.attr.fontPath`._
 
 ### Inject into Context
 
@@ -79,7 +68,7 @@ _You're good to go!_
     android:text="@string/hello_world"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    fontPath="fonts/Roboto-Bold.ttf"/>
+    android:fontFamily="fonts/Roboto-Bold.ttf"/>
 ```
 
 _Note: Popular IDE's (Android Studio, IntelliJ) will likely mark this as an error despite being correct. You may want to add `tools:ignore="MissingPrefix"` to either the View itself or its parent ViewGroup to avoid this. You'll need to add the tools namespace to have access to this "ignore" attribute. `xmlns:tools="
@@ -91,7 +80,7 @@ http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues
 ```xml
 <style name="TextAppearance.FontPath" parent="android:TextAppearance">
     <!-- Custom Attr-->
-    <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>
+    <item name="android:fontFamily">@font/roboto_condensed_regular</item>
 </style>
 ```
 
@@ -109,7 +98,7 @@ http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues
 
 ```xml
 <style name="TextViewCustomFont">
-    <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>
+    <item name="android:fontFamily">@font/roboto_condensed_regular</item>
 </style>
 ```
 
@@ -123,7 +112,7 @@ http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues
 <style name="AppTheme.Widget"/>
 
 <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
-    <item name="fontPath">fonts/Roboto-ThinItalic.ttf</item>
+    <item name="android:fontFamily">fonts/Roboto-ThinItalic.ttf</item>
 </style>
 ```
 
@@ -142,11 +131,6 @@ The `CalligraphyFactory` looks for the font in a pretty specific order, for the 
 4. `Theme` - if defined this is used.
 5. `Default` - if defined in the `CalligraphyConfig` this is used of none of the above are found 
 **OR** if one of the above returns an invalid font. 
-
-### Why *not* piggyback off of fontFamily attribute?
-
-We originally did, but it conflicted with users wanting to actually use that attribute, you now 
-have to define a custom attribute.
 
 ### Why no jar?
 
@@ -202,8 +186,9 @@ If you feel this should be possible to do, please star [this issue](https://code
 
 # Licence
 
-    Copyright 2013 Christopher Jenkins
-    
+    Copyright 2013 Christopher Jenkins,
+    Modifications Copyright (C) 2017 takahirom
+
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at

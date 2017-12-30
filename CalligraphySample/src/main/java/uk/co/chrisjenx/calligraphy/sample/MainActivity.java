@@ -37,21 +37,23 @@ public class MainActivity extends AppCompatActivity {
         }, 1000);
 
         handler.postDelayed(new Runnable() {
-            @Override public void run() {
+            @Override
+            public void run() {
                 toolbar.setTitle(null);
                 toolbar.setSubtitle("Added subtitle");
             }
         }, 2000);
 
         handler.postDelayed(new Runnable() {
-            @Override public void run() {
+            @Override
+            public void run() {
                 toolbar.setTitle("Calligraphy added back");
                 toolbar.setSubtitle("Added subtitle");
             }
         }, 3000);
-    }
 
-    /*
+    }
+   /*
         Uncomment if you disable PrivateFactory injection. See CalligraphyConfig#disablePrivateFactoryInjection()
      */
 //    @Override

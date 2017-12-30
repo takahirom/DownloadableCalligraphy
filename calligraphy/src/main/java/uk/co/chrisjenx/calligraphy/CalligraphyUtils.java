@@ -1,16 +1,15 @@
 package uk.co.chrisjenx.calligraphy;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.annotation.FontRes;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -101,17 +100,16 @@ public final class CalligraphyUtils {
      *
      * @param context  Context
      * @param textView Not null, TextView to apply to.
-     * @param filePath if null/empty will do nothing.
+     * @param fontFamily if null/empty will do nothing.
      * @return true if fonts been applied
      */
-    public static boolean applyFontToTextView(final Context context, final TextView textView, final String filePath) {
-        return applyFontToTextView(context, textView, filePath, false);
+    public static boolean applyFontToTextView(final Context context, final TextView textView, final int fontFamily) {
+        return applyFontToTextView(context, textView, fontFamily, false);
     }
 
-    static boolean applyFontToTextView(final Context context, final TextView textView, final String filePath, boolean deferred) {
+    static boolean applyFontToTextView(final Context context, final TextView textView, final int fontFamily, boolean deferred) {
         if (textView == null || context == null) return false;
-        final AssetManager assetManager = context.getAssets();
-        final Typeface typeface = TypefaceUtils.load(assetManager, filePath);
+        final Typeface typeface = TypefaceUtils.load(context, fontFamily);
         return applyFontToTextView(textView, typeface, deferred);
     }
 
@@ -122,7 +120,7 @@ public final class CalligraphyUtils {
     static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, boolean deferred) {
         if (context == null || textView == null || config == null) return;
         if (!config.isFontSet()) return;
-        applyFontToTextView(context, textView, config.getFontPath(), deferred);
+        applyFontToTextView(context, textView, config.getFontFamily(), deferred);
     }
 
     /**
@@ -134,13 +132,13 @@ public final class CalligraphyUtils {
      * @param textViewFont nullable, will use Default Config if null or fails to find the
      *                     defined font.
      */
-    public static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, final String textViewFont) {
+    public static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, final int textViewFont) {
         applyFontToTextView(context, textView, config, textViewFont, false);
     }
 
-    static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, final String textViewFont, boolean deferred) {
+    static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, final int textViewFont, boolean deferred) {
         if (context == null || textView == null || config == null) return;
-        if (!TextUtils.isEmpty(textViewFont) && applyFontToTextView(context, textView, textViewFont, deferred)) {
+        if (textViewFont != 0 && applyFontToTextView(context, textView, textViewFont, deferred)) {
             return;
         }
         applyFontToTextView(context, textView, config, deferred);
@@ -154,22 +152,23 @@ public final class CalligraphyUtils {
      * @param attributeId if -1 returns null.
      * @return null if attribute is not defined or added to View
      */
-    static String pullFontPathFromView(Context context, AttributeSet attrs, int[] attributeId) {
+    @FontRes
+    static int pullFontPathFromView(Context context, AttributeSet attrs, int[] attributeId) {
         if (attributeId == null || attrs == null)
-            return null;
+            return 0;
 
         final String attributeName;
         try {
             attributeName = context.getResources().getResourceEntryName(attributeId[0]);
         } catch (Resources.NotFoundException e) {
             // invalid attribute ID
-            return null;
+            return 0;
         }
 
         final int stringResourceId = attrs.getAttributeResourceValue(null, attributeName, -1);
         return stringResourceId > 0
-                ? context.getString(stringResourceId)
-                : attrs.getAttributeValue(null, attributeName);
+                ? stringResourceId
+                : attrs.getAttributeIntValue(null, attributeName, 0);
     }
 
     /**
@@ -181,15 +180,16 @@ public final class CalligraphyUtils {
      * @param attributeId if -1 returns null.
      * @return null if attribute is not defined or found in the Style
      */
-    static String pullFontPathFromStyle(Context context, AttributeSet attrs, int[] attributeId) {
+    @FontRes
+    static int pullFontPathFromStyle(Context context, AttributeSet attrs, int[] attributeId) {
         if (attributeId == null || attrs == null)
-            return null;
+            return 0;
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, attributeId);
         if (typedArray != null) {
             try {
                 // First defined attribute
-                String fontFromAttribute = typedArray.getString(0);
-                if (!TextUtils.isEmpty(fontFromAttribute)) {
+                int fontFromAttribute = typedArray.getResourceId(0, 0);
+                if (fontFromAttribute != 0) {
                     return fontFromAttribute;
                 }
             } catch (Exception ignore) {
@@ -198,7 +198,7 @@ public final class CalligraphyUtils {
                 typedArray.recycle();
             }
         }
-        return null;
+        return 0;
     }
 
     /**
@@ -209,19 +209,20 @@ public final class CalligraphyUtils {
      * @param attributeId if -1 returns null.
      * @return returns null if attribute is not defined or if no TextAppearance is found.
      */
-    static String pullFontPathFromTextAppearance(final Context context, AttributeSet attrs, int[] attributeId) {
+    @FontRes
+    static int pullFontPathFromTextAppearance(final Context context, AttributeSet attrs, int[] attributeId) {
         if (attributeId == null || attrs == null) {
-            return null;
+            return 0;
         }
 
         int textAppearanceId = -1;
         final TypedArray typedArrayAttr = context.obtainStyledAttributes(attrs, ANDROID_ATTR_TEXT_APPEARANCE);
         if (typedArrayAttr != null) {
             try {
-                textAppearanceId = typedArrayAttr.getResourceId(0, -1);
+                textAppearanceId = typedArrayAttr.getResourceId(0, 0);
             } catch (Exception ignored) {
                 // Failed for some reason
-                return null;
+                return 0;
             } finally {
                 typedArrayAttr.recycle();
             }
@@ -230,15 +231,15 @@ public final class CalligraphyUtils {
         final TypedArray textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, attributeId);
         if (textAppearanceAttrs != null) {
             try {
-                return textAppearanceAttrs.getString(0);
+                return textAppearanceAttrs.getResourceId(0, 0);
             } catch (Exception ignore) {
                 // Failed for some reason.
-                return null;
+                return 0;
             } finally {
                 textAppearanceAttrs.recycle();
             }
         }
-        return null;
+        return 0;
     }
 
     /**
@@ -249,9 +250,10 @@ public final class CalligraphyUtils {
      * @param attributeId if -1 returns null.
      * @return null if no theme or attribute defined.
      */
-    static String pullFontPathFromTheme(Context context, int styleAttrId, int[] attributeId) {
+    @FontRes
+    static int pullFontPathFromTheme(Context context, int styleAttrId, int[] attributeId) {
         if (styleAttrId == -1 || attributeId == null)
-            return null;
+            return 0;
 
         final Resources.Theme theme = context.getTheme();
         final TypedValue value = new TypedValue();
@@ -259,11 +261,11 @@ public final class CalligraphyUtils {
         theme.resolveAttribute(styleAttrId, value, true);
         final TypedArray typedArray = theme.obtainStyledAttributes(value.resourceId, attributeId);
         try {
-            String font = typedArray.getString(0);
+            int font = typedArray.getResourceId(0, 0);
             return font;
         } catch (Exception ignore) {
             // Failed for some reason.
-            return null;
+            return 0;
         } finally {
             typedArray.recycle();
         }
@@ -278,9 +280,10 @@ public final class CalligraphyUtils {
      * @param attributeId    if -1 returns null.
      * @return null if no theme or attribute defined.
      */
-    static String pullFontPathFromTheme(Context context, int styleAttrId, int subStyleAttrId, int[] attributeId) {
+    @FontRes
+    static int pullFontPathFromTheme(Context context, int styleAttrId, int subStyleAttrId, int[] attributeId) {
         if (styleAttrId == -1 || attributeId == null)
-            return null;
+            return 0;
 
         final Resources.Theme theme = context.getTheme();
         final TypedValue value = new TypedValue();
@@ -292,24 +295,24 @@ public final class CalligraphyUtils {
             subStyleResId = parentTypedArray.getResourceId(0, -1);
         } catch (Exception ignore) {
             // Failed for some reason.
-            return null;
+            return 0;
         } finally {
             parentTypedArray.recycle();
         }
 
-        if (subStyleResId == -1) return null;
+        if (subStyleResId == -1) return 0;
         final TypedArray subTypedArray = context.obtainStyledAttributes(subStyleResId, attributeId);
         if (subTypedArray != null) {
             try {
-                return subTypedArray.getString(0);
+                return subTypedArray.getResourceId(0, 0);
             } catch (Exception ignore) {
                 // Failed for some reason.
-                return null;
+                return 0;
             } finally {
                 subTypedArray.recycle();
             }
         }
-        return null;
+        return 0;
     }
 
     private static Boolean sToolbarCheck = null;

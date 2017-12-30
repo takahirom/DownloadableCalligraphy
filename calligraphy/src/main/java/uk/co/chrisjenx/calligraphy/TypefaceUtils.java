@@ -1,7 +1,8 @@
 package uk.co.chrisjenx.calligraphy;
 
-import android.content.res.AssetManager;
+import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
 import java.util.HashMap;
@@ -18,30 +19,30 @@ import java.util.Map;
  */
 public final class TypefaceUtils {
 
-    private static final Map<String, Typeface> sCachedFonts = new HashMap<String, Typeface>();
+    private static final Map<Integer, Typeface> sCachedFonts = new HashMap<Integer, Typeface>();
     private static final Map<Typeface, CalligraphyTypefaceSpan> sCachedSpans = new HashMap<Typeface, CalligraphyTypefaceSpan>();
 
     /**
      * A helper loading a custom font.
      *
-     * @param assetManager App's asset manager.
-     * @param filePath     The path of the file.
+     * @param context App's asset manager.
+     * @param fontFamily     The path of the file.
      * @return Return {@link android.graphics.Typeface} or null if the path is invalid.
      */
-    public static Typeface load(final AssetManager assetManager, final String filePath) {
+    public static Typeface load(final Context context, final int fontFamily) {
         synchronized (sCachedFonts) {
             try {
-                if (!sCachedFonts.containsKey(filePath)) {
-                    final Typeface typeface = Typeface.createFromAsset(assetManager, filePath);
-                    sCachedFonts.put(filePath, typeface);
+                if (!sCachedFonts.containsKey(fontFamily)) {
+                    final Typeface typeface = ResourcesCompat.getFont(context, fontFamily);
+                    sCachedFonts.put(fontFamily, typeface);
                     return typeface;
                 }
             } catch (Exception e) {
-                Log.w("Calligraphy", "Can't create asset from " + filePath + ". Make sure you have passed in the correct path and file name.", e);
-                sCachedFonts.put(filePath, null);
+                Log.w("Calligraphy", "Can't create asset from " + fontFamily + ". Make sure you have passed in the correct path and file name.", e);
+                sCachedFonts.put(fontFamily, null);
                 return null;
             }
-            return sCachedFonts.get(filePath);
+            return sCachedFonts.get(fontFamily);
         }
     }
 

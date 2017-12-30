@@ -19,41 +19,51 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="24sp"
             android:text="@string/default_theme"/>
 
         <TextView
-            fontPath="fonts/Roboto-Bold.ttf"
+            android:fontFamily="@font/roboto_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/defined_fontpath_view"/>
+            android:textSize="24sp"
+            android:text="@string/defined_fontfamily_view"
+            />
 
         <TextView
-            fontPath="fonts/Roboto-None.ttf"
+            android:fontFamily="@font/roboto_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/defined_incorrect"/>
+            android:textSize="24sp"
+            android:text="@string/defined_fontfamily_view"
+            />
 
         <TextView
             style="@style/AppTheme.Widget.TextView.Style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="24sp"
             android:text="@string/defined_in_style"/>
 
         <TextView
             style="@style/AppTheme.Widget.TextViewAppearanceStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="24sp"
             android:text="@string/defined_in_appears_style"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="24sp"
             android:text="@string/defined_in_appears"
             android:textAppearance="@style/TextAppearance.FontPathView"/>
 
         <TextView
+            android:id="@+id/my_text_appearance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="24sp"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@string/defined_in_appears"
@@ -62,18 +72,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="24sp"
             android:text="@string/defined_in_appears_caps"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.FontPathView"/>
 
         <uk.co.chrisjenx.calligraphy.sample.CustomTextView
-            fontPath="fonts/Oswald-Stencbab.ttf"
+            android:fontFamily="@font/oswald_stencbab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="24sp"
             android:text="@string/defined_custom_view"/>
 
         <uk.co.chrisjenx.calligraphy.sample.CustomViewWithTypefaceSupport
-            fontPath="fonts/Oswald-Stencbab.ttf"
+            android:fontFamily="@font/oswald_stencbab"
+            android:textSize="24sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -81,34 +94,39 @@
             android:id="@+id/stub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="24sp"
             android:layout="@layout/stub"/>
 
         <ViewStub
             android:id="@+id/stub_with_font_path"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="24sp"
             android:layout="@layout/stub_with_font_path"/>
 
         <CheckBox
-            fontPath="fonts/Oswald-Stencbab.ttf"
+            android:fontFamily="@font/oswald_stencbab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
+            android:textSize="24sp"
             android:text="@string/checkbox_custom"/>
 
         <EditText
             android:id="@+id/edit_text"
-            fontPath="fonts/Roboto-Bold.ttf"
+            android:fontFamily="@font/roboto_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
+            android:textSize="24sp"
             android:hint="@string/edit_text_hint"/>
 
         <uk.co.chrisjenx.calligraphy.sample.TextField
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="24sp"
             android:text="@string/custom_view_style_text"/>
 
         <Button
@@ -117,15 +135,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
+            android:textSize="24sp"
             android:text="@string/button_default"/>
 
         <Button
             android:id="@+id/button_bold"
-            fontPath="fonts/Roboto-Bold.ttf"
+            android:fontFamily="@font/roboto_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
+            android:textSize="24sp"
             android:text="@string/button_defined"/>
 
     </LinearLayout>

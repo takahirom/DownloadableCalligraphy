@@ -1,7 +1,8 @@
 package uk.co.chrisjenx.calligraphy;
 
 import android.os.Build;
-import android.text.TextUtils;
+import android.support.annotation.AttrRes;
+import android.support.annotation.FontRes;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -90,10 +91,12 @@ public class CalligraphyConfig {
     /**
      * The default Font Path if nothing else is setup.
      */
-    private final String mFontPath;
+    @FontRes
+    private final int mFontFamily;
     /**
      * Default Font Path Attr Id to lookup
      */
+    @AttrRes
     private final int mAttrId;
     /**
      * Use Reflection to inject the private factory.
@@ -119,7 +122,7 @@ public class CalligraphyConfig {
 
     protected CalligraphyConfig(Builder builder) {
         mIsFontSet = builder.isFontSet;
-        mFontPath = builder.fontAssetPath;
+        mFontFamily = builder.fontFamily;
         mAttrId = builder.attrId;
         mReflection = builder.reflection;
         mCustomViewCreation = builder.customViewCreation;
@@ -131,10 +134,11 @@ public class CalligraphyConfig {
     }
 
     /**
-     * @return mFontPath for text views might be null
+     * @return mFontFamily for text views might be null
      */
-    public String getFontPath() {
-        return mFontPath;
+    @FontRes
+    public int getFontFamily() {
+        return mFontFamily;
     }
 
     /**
@@ -167,6 +171,7 @@ public class CalligraphyConfig {
     /**
      * @return the custom attrId to look for, -1 if not set.
      */
+    @AttrRes
     public int getAttrId() {
         return mAttrId;
     }
@@ -191,15 +196,16 @@ public class CalligraphyConfig {
         /**
          * The fontAttrId to look up the font path from.
          */
-        private int attrId = R.attr.fontPath;
+        private int attrId = android.R.attr.fontFamily;
         /**
          * Has the user set the default font path.
          */
         private boolean isFontSet = false;
         /**
-         * The default fontPath
+         * The default fontFamily
          */
-        private String fontAssetPath = null;
+        @FontRes
+        private int fontFamily = 0;
         /**
          * Additional Class Styles. Can be empty.
          */
@@ -208,26 +214,15 @@ public class CalligraphyConfig {
         private Set<Class<?>> mHasTypefaceClasses = new HashSet<>();
 
         /**
-         * This defaults to R.attr.fontPath. So only override if you want to use your own attrId.
-         *
-         * @param fontAssetAttrId the custom attribute to look for fonts in assets.
-         * @return this builder.
-         */
-        public Builder setFontAttrId(int fontAssetAttrId) {
-            this.attrId = fontAssetAttrId;
-            return this;
-        }
-
-        /**
          * Set the default font if you don't define one else where in your styles.
          *
-         * @param defaultFontAssetPath a path to a font file in the assets folder, e.g. "fonts/Roboto-light.ttf",
+         * @param defaultFont a path to a font file in the assets folder, e.g. "fonts/Roboto-light.ttf",
          *                             passing null will default to the device font-family.
          * @return this builder.
          */
-        public Builder setDefaultFontPath(String defaultFontAssetPath) {
-            this.isFontSet = !TextUtils.isEmpty(defaultFontAssetPath);
-            this.fontAssetPath = defaultFontAssetPath;
+        public Builder setDefaultFont(@FontRes int defaultFont) {
+            this.isFontSet = defaultFont != 0;
+            this.fontFamily = defaultFont;
             return this;
         }
 
@@ -313,7 +308,7 @@ public class CalligraphyConfig {
         }
 
         public CalligraphyConfig build() {
-            this.isFontSet = !TextUtils.isEmpty(fontAssetPath);
+            this.isFontSet = fontFamily != 0;
             return new CalligraphyConfig(this);
         }
     }

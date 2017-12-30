@@ -182,7 +182,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
      *                    just returns this value.
      * @param name        name of the thing to inflate.
      * @param viewContext Context to inflate by if parent is null
-     * @param attrs       Attr for this view which we can steal fontPath from too.
+     * @param attrs       Attr for this view which we can steal fontFamily from too.
      * @return view or the View we inflate in here.
      */
     private View createCustomViewInternal(View parent, View view, String name, Context viewContext, AttributeSet attrs) {

@@ -35,8 +35,8 @@ public class PlaceholderFragment extends Fragment {
         ViewStub stub = ButterKnife.findById(view, R.id.stub);
         stub.inflate();
 
-        ViewStub stubWithFontPath = ButterKnife.findById(view, R.id.stub_with_font_path);
-        stubWithFontPath.inflate();
+        ViewStub stubWithFontFamily = ButterKnife.findById(view, R.id.stub_with_font_path);
+        stubWithFontFamily.inflate();
     }
 
     @OnClick({R.id.button_bold})
