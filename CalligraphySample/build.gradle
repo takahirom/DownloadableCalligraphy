@@ -23,13 +23,13 @@ android {
 }
 
 dependencies {
-    compile project(':calligraphy')
-    compile "com.android.support:support-v4:${supportLibraryVersion}"
-    compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
+    implementation project(':downloadable-calligraphy')
+    implementation "com.android.support:support-v4:${supportLibraryVersion}"
+    implementation "com.android.support:appcompat-v7:${supportLibraryVersion}"
 
-    compile 'com.jakewharton:butterknife:8.5.1'
+    implementation 'com.jakewharton:butterknife:8.5.1'
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-//    debugCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }

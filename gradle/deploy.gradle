@@ -1,122 +1,56 @@
-/*
- * Copyright 2013 Chris Banes
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
 
-apply plugin: 'maven'
-apply plugin: 'signing'
+version '0.1.0'
+group 'com.github.takahirom.downloadable.calligraphy'
 
-def isReleaseBuild() {
-    project.ext.isReleaseVersion
-}
+publishing {
+    publications {
+        Production(MavenPublication) {
+            artifact("$buildDir/outputs/aar/calligraphy-release.aar")
+            groupId
+            artifactId 'downloadable-calligraphy'
+            version this.version
 
-def getReleaseRepositoryUrl() {
-    return "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-}
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
 
-def getSnapshotRepositoryUrl() {
-    return "https://oss.sonatype.org/content/repositories/snapshots/"
-}
-
-def getRepositoryUsername() {
-    return hasProperty('sonatypeUsername') ? sonatypeUsername : ""
-}
-
-def getRepositoryPassword() {
-    return hasProperty('sonatypePassword') ? sonatypePassword : ""
-}
-
-// Debug Build or Release?
-if (isReleaseBuild()) {
-    println "RELEASE BUILD $version"
-} else {
-    version += "-SNAPSHOT"
-    println "DEBUG BUILD $version"
-}
-
-afterEvaluate { project ->
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-                pom.groupId = GROUP
-                pom.version = version
-                pom.artifactId = POM_ARTIFACT_ID
-
-                repository(url: getReleaseRepositoryUrl()) {
-                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
-                }
-                snapshotRepository(url: getSnapshotRepositoryUrl()) {
-                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
-                }
-
-                pom.project {
-                    name POM_NAME
-                    packaging POM_PACKAGING
-                    description POM_DESCRIPTION
-                    url POM_URL
-
-                    scm {
-                        url POM_SCM_URL
-                        connection POM_SCM_CONNECTION
-                        developerConnection POM_SCM_DEV_CONNECTION
-                    }
-
-                    licenses {
-                        license {
-                            name POM_LICENCE_NAME
-                            url POM_LICENCE_URL
-                            distribution POM_LICENCE_DIST
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id POM_DEVELOPER_ID
-                            name POM_DEVELOPER_NAME
-                            email POM_DEVELOPER_EMAIL
-                        }
+                // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
+                    // Ensure dependencies such as fileTree are not included in the pom.
+                    if (it.name != 'unspecified') {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
                     }
                 }
             }
         }
     }
+}
 
-    signing {
-        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
-        sign configurations.archives
-    }
+bintray {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-    task androidJavadocs(type: Javadoc) {
-        source = android.sourceSets.main.java.source
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    }
-
-    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
-        classifier = 'javadoc'
-        from androidJavadocs.destinationDir
-    }
-
-    task androidSourcesJar(type: Jar) {
-        classifier = 'sources'
-//        from android.sourceSets.main.java
-        from android.sourceSets.main.java.source
-    }
-
-    artifacts {
-        archives androidSourcesJar
-        archives androidJavadocsJar
+    user = properties.getProperty('bintrayUser') ?: project.hasProperty('bintrayUser') ?: System.getenv('BINTRAY_USER')
+    key = properties.getProperty('bintrayApiKey') ?: project.hasProperty('bintrayApiKey') ?: System.getenv('BINTRAY_API_KEY')
+    configurations = ['archives']
+    override = true
+    pkg {
+        repo = 'maven'
+        name = 'downloadable-calligraphy'
+        description = "This android library provides a way to set default (downloadable) fonts using Calligraphy methods."
+        publish = true
+        publicDownloadNumbers = true
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/takahirom/DownloadableCalligraphy.git'
+        dryRun = true
+        version {
+            name = this.version
+            released = new Date()
+            vcsTag = this.version
+        }
     }
 }

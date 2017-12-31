@@ -1,1 +1,1 @@
-include ':calligraphy', ':CalligraphySample'
+include ':downloadable-calligraphy', ':CalligraphySample'
