@@ -14,7 +14,7 @@ public class CalligraphyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFont(R.font.roboto_thin_italic)
+                .setDefaultFont(R.font.bungee_shade)
                 .addCustomViewWithSetTypeface(CustomViewWithTypefaceSupport.class)
                 .addCustomStyle(TextField.class, R.attr.textFieldStyle)
                 .build()

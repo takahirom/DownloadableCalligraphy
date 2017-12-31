@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.annotation.FontRes;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -13,6 +14,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
 import android.widget.TextView;
 
 /**
@@ -58,7 +60,7 @@ public final class CalligraphyUtils {
     /**
      * Applies a Typeface to a TextView, if deferred,its recommend you don't call this multiple
      * times, as this adds a TextWatcher.
-     *
+     * <p>
      * Deferring should really only be used on tricky views which get Typeface set by the system at
      * weird times.
      *
@@ -98,8 +100,8 @@ public final class CalligraphyUtils {
      * Useful for manually fonts to a TextView. Will not default back to font
      * set in {@link uk.co.chrisjenx.calligraphy.CalligraphyConfig}
      *
-     * @param context  Context
-     * @param textView Not null, TextView to apply to.
+     * @param context    Context
+     * @param textView   Not null, TextView to apply to.
      * @param fontFamily if null/empty will do nothing.
      * @return true if fonts been applied
      */
@@ -109,7 +111,7 @@ public final class CalligraphyUtils {
 
     static boolean applyFontToTextView(final Context context, final TextView textView, final int fontFamily, boolean deferred) {
         if (textView == null || context == null) return false;
-        final Typeface typeface = TypefaceUtils.load(context, fontFamily);
+        final Typeface typeface = TypefaceUtils.load(context, fontFamily, textView);
         return applyFontToTextView(textView, typeface, deferred);
     }
 
@@ -211,12 +213,12 @@ public final class CalligraphyUtils {
      */
     @FontRes
     static int pullFontPathFromTextAppearance(final Context context, AttributeSet attrs, int[] attributeId) {
-        if (attributeId == null || attrs == null) {
+        if (attributeId == null || attrs == null)
             return 0;
-        }
-
         int textAppearanceId = -1;
-        final TypedArray typedArrayAttr = context.obtainStyledAttributes(attrs, ANDROID_ATTR_TEXT_APPEARANCE);
+        // For prevent using default component font
+        final ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, android.R.style.Theme_NoDisplay);
+        final TypedArray typedArrayAttr = contextThemeWrapper.obtainStyledAttributes(attrs, ANDROID_ATTR_TEXT_APPEARANCE);
         if (typedArrayAttr != null) {
             try {
                 textAppearanceId = typedArrayAttr.getResourceId(0, 0);
@@ -228,6 +230,13 @@ public final class CalligraphyUtils {
             }
         }
 
+        final Integer textAppearanceAttrs = getFontFromTextAppearance(context, attributeId, textAppearanceId);
+        if (textAppearanceAttrs != null) return textAppearanceAttrs;
+        return 0;
+    }
+
+    @Nullable
+    private static int getFontFromTextAppearance(Context context, int[] attributeId, int textAppearanceId) {
         final TypedArray textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, attributeId);
         if (textAppearanceAttrs != null) {
             try {
@@ -261,8 +270,7 @@ public final class CalligraphyUtils {
         theme.resolveAttribute(styleAttrId, value, true);
         final TypedArray typedArray = theme.obtainStyledAttributes(value.resourceId, attributeId);
         try {
-            int font = typedArray.getResourceId(0, 0);
-            return font;
+            return typedArray.getResourceId(0, 0);
         } catch (Exception ignore) {
             // Failed for some reason.
             return 0;

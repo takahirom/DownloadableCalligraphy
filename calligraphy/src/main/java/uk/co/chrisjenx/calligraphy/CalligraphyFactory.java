@@ -117,17 +117,31 @@ class CalligraphyFactory {
 
     void onViewCreatedInternal(View view, final Context context, AttributeSet attrs) {
         if (view instanceof TextView) {
-            // Fast path the setting of TextView's font, means if we do some delayed setting of font,
-            // which has already been set by use we skip this TextView (mainly for inflating custom,
-            // TextView's inside the Toolbar/ActionBar).
-            if (TypefaceUtils.isLoaded(((TextView) view).getTypeface())) {
-                return;
+            // Try to get typeface attribute value
+            // Since we're not using namespace it's a little bit tricky
+
+            // Check xml attrs, style attrs and text appearance for font path
+            @FontRes
+            int textViewFont = resolveFontFamily(context, attrs);
+
+            // Try theme attributes
+            if (textViewFont == 0) {
+                final int[] styleForTextView = getStyleForTextView((TextView) view);
+                if (styleForTextView[1] != -1)
+                    textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], styleForTextView[1], mAttributeId);
+                else
+                    textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], mAttributeId);
+            }
+
+            // Try View TextAppearance
+            if (textViewFont == 0) {
+                textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mAttributeId);
             }
 
             // Still need to defer the Native action bar, appcompat-v7:21+ uses the Toolbar underneath. But won't match these anyway.
             final boolean deferred = matchesResourceIdName(view, ACTION_BAR_TITLE) || matchesResourceIdName(view, ACTION_BAR_SUBTITLE);
 
-            CalligraphyUtils.applyFontToTextView(context, (TextView) view, CalligraphyConfig.get(), deferred);
+            CalligraphyUtils.applyFontToTextView(context, (TextView) view, CalligraphyConfig.get(), textViewFont, deferred);
         }
 
         // AppCompat API21+ The ActionBar doesn't inflate default Title/SubTitle, we need to scan the
@@ -173,11 +187,6 @@ class CalligraphyFactory {
         // Try view style attributes
         if (textViewFont == 0) {
             textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, mAttributeId);
-        }
-
-        // Try View TextAppearance
-        if (textViewFont == 0) {
-            textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mAttributeId);
         }
 
         return textViewFont;

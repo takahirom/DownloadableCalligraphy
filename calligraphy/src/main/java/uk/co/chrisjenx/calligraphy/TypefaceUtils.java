@@ -1,9 +1,12 @@
 package uk.co.chrisjenx.calligraphy;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
+import android.util.TypedValue;
+import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,30 +22,23 @@ import java.util.Map;
  */
 public final class TypefaceUtils {
 
-    private static final Map<Integer, Typeface> sCachedFonts = new HashMap<Integer, Typeface>();
     private static final Map<Typeface, CalligraphyTypefaceSpan> sCachedSpans = new HashMap<Typeface, CalligraphyTypefaceSpan>();
 
     /**
      * A helper loading a custom font.
      *
-     * @param context App's asset manager.
-     * @param fontFamily     The path of the file.
+     * @param context    App's asset manager.
+     * @param fontFamily The path of the file.
+     * @param textView
      * @return Return {@link android.graphics.Typeface} or null if the path is invalid.
      */
-    public static Typeface load(final Context context, final int fontFamily) {
-        synchronized (sCachedFonts) {
-            try {
-                if (!sCachedFonts.containsKey(fontFamily)) {
-                    final Typeface typeface = ResourcesCompat.getFont(context, fontFamily);
-                    sCachedFonts.put(fontFamily, typeface);
-                    return typeface;
-                }
-            } catch (Exception e) {
-                Log.w("Calligraphy", "Can't create asset from " + fontFamily + ". Make sure you have passed in the correct path and file name.", e);
-                sCachedFonts.put(fontFamily, null);
-                return null;
-            }
-            return sCachedFonts.get(fontFamily);
+    @SuppressLint("RestrictedApi")
+    public static Typeface load(final Context context, final int fontFamily, TextView textView) {
+        try {
+            return ResourcesCompat.getFont(context, fontFamily, new TypedValue(), Typeface.NORMAL, textView);
+        } catch (Exception e) {
+            Log.w("Calligraphy", "Can't create asset from " + fontFamily + ". Make sure you have passed in the correct path and file name.", e);
+            return null;
         }
     }
 
@@ -62,16 +58,6 @@ public final class TypefaceUtils {
             }
             return sCachedSpans.get(typeface);
         }
-    }
-
-    /**
-     * Is the passed in typeface one of ours?
-     *
-     * @param typeface nullable, the typeface to check if ours.
-     * @return true if we have loaded it false otherwise.
-     */
-    public static boolean isLoaded(Typeface typeface) {
-        return typeface != null && sCachedFonts.containsValue(typeface);
     }
 
     private TypefaceUtils() {
