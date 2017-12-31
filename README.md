@@ -6,7 +6,7 @@ This library provides a way to set default (downloadable) fonts using [Calligrap
 # Credit
 This library based on chrisjenx/Calligraphy
 https://github.com/chrisjenx/Calligraphy
-Support Library
+Android Support Library
 https://source.android.com/setup/licenses
 
 ## Getting started
@@ -17,15 +17,15 @@ Coming soon
 
 ### Add Fonts
 
-Add your custom fonts to `fonts/`. All font definitions are relative to this path.
+Add your custom fonts to `font/`. All font definitions are relative to this path.
 
 Assuming that you are using Gradle you should create the fonts directory under `src/main/` in your project directory if it does not already exist.
-As it's popular to use multi-project build with Gradle the path is usually `app/src/main/fonts/`, where `app` is the project name.
+As it's popular to use multi-project build with Gradle the path is usually `app/src/main/font/`, where `app` is the project name.
 
 ### Usage
 
 ```xml
-<TextView android:fontFamily="@fonts/my_font"/>
+<TextView android:fontFamily="@font/my_font"/>
 ``` 
 **Note: The missing namespace, this __IS__ intentional.**
 
