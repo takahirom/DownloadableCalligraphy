@@ -15,7 +15,9 @@ And this library use [Android Support Library](https://developer.android.com/gui
 
 ### Dependency
 
-Coming soon
+```gradle
+implementation 'com.github.takahirom.downloadable.calligraphy:downloadable-calligraphy:0.1.0'
+```
 
 ### Add Fonts
 
@@ -180,12 +182,6 @@ Both have a method called `setSwitchTypeface` that sets the typeface within the 
 - [@dlew](https://github.com/dlew)
 - [@ansman](https://github.com/ansman)
 
-# Note
-
-This library was created because it is currently not possible to declare a custom font in XML files in Android.
-
-If you feel this should be possible to do, please star [this issue](https://code.google.com/p/android/issues/detail?id=88945) on the official Android bug tracker.
-
 # Licence
 
     Copyright 2013 Christopher Jenkins,
@@ -202,5 +198,3 @@ If you feel this should be possible to do, please star [this issue](https://code
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-[![Badge](http://www.libtastic.com/static/osbadges/79.png)](http://www.libtastic.com/technology/79/)
