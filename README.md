@@ -3,11 +3,13 @@ DownloadableCalligraphy
 
 This library provides a way to set default (downloadable) fonts using [Calligraphy](https://github.com/chrisjenx/Calligraphy) methods.
 
+This library supports [Downloadable Font](https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts.html) of Support Library 26.0.
+
 # Credit
-This library based on chrisjenx/Calligraphy
-https://github.com/chrisjenx/Calligraphy
-Android Support Library
-https://source.android.com/setup/licenses
+This library based on [chrisjenx/Calligraphy](https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts.html)
+
+And this library use [Android Support Library](https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts.html)
+
 
 ## Getting started
 
