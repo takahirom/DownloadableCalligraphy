@@ -1,8 +1,22 @@
 apply plugin: 'maven-publish'
+apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 version '0.1.0'
 group 'com.github.takahirom.downloadable.calligraphy'
+def isDryRun = false
+
+def gitHubUrl = 'https://github.com/takahirom/DownloadableCalligraphy.git'
+def siteUrl = 'https://github.com/takahirom/DownloadableCalligraphy'
+
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+artifacts {
+    archives sourcesJar
+}
 
 publishing {
     publications {
@@ -45,12 +59,43 @@ bintray {
         publish = true
         publicDownloadNumbers = true
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/takahirom/DownloadableCalligraphy.git'
-        dryRun = true
+        vcsUrl = gitHubUrl
+        dryRun = isDryRun
         version {
             name = this.version
             released = new Date()
             vcsTag = this.version
+        }
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name 'Downlodable Font'
+                url siteUrl
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'takahirom'
+                        name 'takahirom'
+                        email 'takam.dev@gmail.com'
+                    }
+                }
+                scm {
+                    connection gitHubUrl
+                    developerConnection gitHubUrl
+                    url siteUrl
+
+                }
+            }
         }
     }
 }
