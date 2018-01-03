@@ -42,7 +42,7 @@ Define your default font using `CalligraphyConfig`, in your `Application` class 
 public void onCreate() {
     super.onCreate();
     CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                            .setDefaultFontPath(R.font.roboto_regular)
+                            .setDefaultFont(R.font.roboto_regular)
                             .build()
             );
     //....
