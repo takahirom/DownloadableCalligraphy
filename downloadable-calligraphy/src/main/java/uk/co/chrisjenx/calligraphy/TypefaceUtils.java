@@ -3,11 +3,16 @@ package uk.co.chrisjenx.calligraphy;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.util.TypedValue;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,15 +35,52 @@ public final class TypefaceUtils {
      * @param context    App's asset manager.
      * @param fontFamily The path of the file.
      * @param textView
+     * @param deferred
      * @return Return {@link android.graphics.Typeface} or null if the path is invalid.
      */
     @SuppressLint("RestrictedApi")
-    public static Typeface load(final Context context, final int fontFamily, TextView textView) {
+    public static boolean load(final Context context, final int fontFamily, final TextView textView, final boolean deferred) {
         try {
-            return ResourcesCompat.getFont(context, fontFamily, new TypedValue(), Typeface.NORMAL, textView);
+            final WeakReference<TextView> weakTextView = new WeakReference<>(textView);
+            final ResourcesCompat.FontCallback fontCallback = new ResourcesCompat.FontCallback() {
+
+                @Override
+                public void onFontRetrieved(@NonNull final Typeface typeface) {
+                    final TextView view = weakTextView.get();
+                    if (view == null) {
+                        return;
+                    }
+                    view.setTypeface(typeface);
+                    if (deferred) {
+                        view.setText(CalligraphyUtils.applyTypefaceSpan(view.getText(), typeface), TextView.BufferType.SPANNABLE);
+                        view.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                                CalligraphyUtils.applyTypefaceSpan(s, typeface);
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFontRetrievalFailed(int reason) {
+                    Log.w("Calligraphy", "Font RetrievalFail reason:" + reason);
+                }
+            };
+
+            ResourcesCompat.getFont(context, fontFamily, fontCallback, new Handler(Looper.getMainLooper()));
+            return true;
         } catch (Exception e) {
             Log.w("Calligraphy", "Can't create asset from " + fontFamily + ". Make sure you have passed in the correct path and file name.", e);
-            return null;
+            return false;
         }
     }
 

@@ -111,8 +111,7 @@ public final class CalligraphyUtils {
 
     static boolean applyFontToTextView(final Context context, final TextView textView, final int fontFamily, boolean deferred) {
         if (textView == null || context == null) return false;
-        final Typeface typeface = TypefaceUtils.load(context, fontFamily, textView);
-        return applyFontToTextView(textView, typeface, deferred);
+        return TypefaceUtils.load(context, fontFamily, textView, deferred);
     }
 
     static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config) {
