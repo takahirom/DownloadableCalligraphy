@@ -2,7 +2,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version '0.1.0'
+version '0.1.2'
 group 'com.github.takahirom.downloadable.calligraphy'
 def isDryRun = false
 
@@ -21,7 +21,7 @@ artifacts {
 publishing {
     publications {
         Production(MavenPublication) {
-            artifact("$buildDir/outputs/aar/calligraphy-release.aar")
+            artifact("$buildDir/outputs/aar/downloadable-calligraphy-release.aar")
             groupId
             artifactId 'downloadable-calligraphy'
             version this.version
