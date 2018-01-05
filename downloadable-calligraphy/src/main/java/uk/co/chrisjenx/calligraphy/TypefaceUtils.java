@@ -1,6 +1,5 @@
 package uk.co.chrisjenx.calligraphy;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Handler;
@@ -38,7 +37,6 @@ public final class TypefaceUtils {
      * @param deferred
      * @return Return {@link android.graphics.Typeface} or null if the path is invalid.
      */
-    @SuppressLint("RestrictedApi")
     public static boolean load(final Context context, final int fontFamily, final TextView textView, final boolean deferred) {
         try {
             final WeakReference<TextView> weakTextView = new WeakReference<>(textView);
