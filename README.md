@@ -15,8 +15,10 @@ And this library use [Android Support Library](https://developer.android.com/gui
 
 ### Dependency
 
+Latest Version : [ ![Download](https://api.bintray.com/packages/takahirom/maven/downloadable-calligraphy/images/download.svg) ](https://bintray.com/takahirom/maven/downloadable-calligraphy/_latestVersion)
+
 ```gradle
-implementation 'com.github.takahirom.downloadable.calligraphy:downloadable-calligraphy:0.1.0'
+implementation 'com.github.takahirom.downloadable.calligraphy:downloadable-calligraphy:[Latest Version]'
 ```
 
 ### Add Fonts
@@ -72,7 +74,7 @@ _You're good to go!_
     android:text="@string/hello_world"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:fontFamily="fonts/Roboto-Bold.ttf"/>
+    android:fontFamily="@font/roboto-bold"/>
 ```
 
 _Note: Popular IDE's (Android Studio, IntelliJ) will likely mark this as an error despite being correct. You may want to add `tools:ignore="MissingPrefix"` to either the View itself or its parent ViewGroup to avoid this. You'll need to add the tools namespace to have access to this "ignore" attribute. `xmlns:tools="
