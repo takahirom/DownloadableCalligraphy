@@ -26,11 +26,11 @@ implementation 'com.github.takahirom.downloadable.calligraphy:downloadable-calli
 You can use Bundled Font or Downloadable Font.
 
 #### Downloadable Font
-You can add Downloadable Font using Android Studio.
+You can add Downloadable Font using Android Studio.  
 https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts.html#via-android-studio
 
 #### Bundled Font
-Add your custom fonts to `res/font/`. You can see the Font Resource document.
+Add your custom fonts to `res/font/`. You can see the Font Resource document.  
 https://developer.android.com/guide/topics/resources/font-resource.html
 
 ### Usage
