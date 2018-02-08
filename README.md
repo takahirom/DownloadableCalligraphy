@@ -23,10 +23,15 @@ implementation 'com.github.takahirom.downloadable.calligraphy:downloadable-calli
 
 ### Add Fonts
 
-Add your custom fonts to `font/`. All font definitions are relative to this path.
+You can use Bundled Font or Downloadable Font.
 
-Assuming that you are using Gradle you should create the fonts directory under `src/main/` in your project directory if it does not already exist.
-As it's popular to use multi-project build with Gradle the path is usually `app/src/main/font/`, where `app` is the project name.
+#### Downloadable Font
+You can add Downloadable Font using Android Studio.
+https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts.html#via-android-studio
+
+#### Bundled Font
+Add your custom fonts to `res/font/`. You can see the Font Resource document.
+https://developer.android.com/guide/topics/resources/font-resource.html
 
 ### Usage
 
@@ -84,7 +89,7 @@ http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues
 
 
 ```xml
-<style name="TextAppearance.FontPath" parent="android:TextAppearance">
+<style name="TextAppearance.FontFamily" parent="android:TextAppearance">
     <!-- Custom Attr-->
     <item name="android:fontFamily">@font/roboto_condensed_regular</item>
 </style>
@@ -95,7 +100,7 @@ http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues
     android:text="@string/hello_world"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textAppearance="@style/TextAppearance.FontPath"/>
+    android:textAppearance="@style/TextAppearance.FontFamily"/>
 
 ```
 
@@ -118,7 +123,7 @@ http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues
 <style name="AppTheme.Widget"/>
 
 <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
-    <item name="android:fontFamily">@fonts/roboto_thinitalic</item>
+    <item name="android:fontFamily">@font/roboto_thinitalic</item>
 </style>
 ```
 
@@ -137,29 +142,6 @@ The `CalligraphyFactory` looks for the font in a pretty specific order, for the 
 4. `Theme` - if defined this is used.
 5. `Default` - if defined in the `CalligraphyConfig` this is used of none of the above are found 
 **OR** if one of the above returns an invalid font. 
-
-### Why no jar?
-
-We needed to ship a custom ID with Calligraphy to improve the Font Injection flow. This
-unfortunately means that is has to be an `aar`. But you're using Gradle now anyway right?
-
-### Multiple Typeface's per TextView / Spannables
-
-It is possible to use multiple Typefaces inside a `TextView`, this isn't new concept to Android.
-
-This _could_ be achieved using something like the following code.
-
-```java
-SpannableStringBuilder sBuilder = new SpannableStringBuilder();
-sBuilder.append("Hello!") // Bold this
-        .append("I use Calligraphy"); // Default TextView font.
-// Create the Typeface you want to apply to certain text
-CalligraphyTypefaceSpan typefaceSpan = new CalligraphyTypefaceSpan(TypefaceUtils.load(getAssets(), "fonts/Roboto-Bold.ttf"));
-// Apply typeface to the Spannable 0 - 6 "Hello!" This can of course by dynamic.
-sBuilder.setSpan(typefaceSpan, 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-setText(sBuilder, TextView.BufferType.SPANNABLE);
-```
-Of course this is just an example. Your mileage may vary.
 
 ### Exceptions / Pitfalls
 
