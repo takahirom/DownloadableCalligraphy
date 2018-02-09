@@ -82,52 +82,6 @@ _You're good to go!_
     android:fontFamily="@font/roboto_bold"/>
 ```
 
-_Note: Popular IDE's (Android Studio, IntelliJ) will likely mark this as an error despite being correct. You may want to add `tools:ignore="MissingPrefix"` to either the View itself or its parent ViewGroup to avoid this. You'll need to add the tools namespace to have access to this "ignore" attribute. `xmlns:tools="
-http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues/detail?id=65176._
-
-### Custom font in TextAppearance
-
-
-```xml
-<style name="TextAppearance.FontFamily" parent="android:TextAppearance">
-    <!-- Custom Attr-->
-    <item name="android:fontFamily">@font/roboto_condensed_regular</item>
-</style>
-```
-
-```xml
-<TextView
-    android:text="@string/hello_world"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textAppearance="@style/TextAppearance.FontFamily"/>
-
-```
-
-### Custom font in Styles
-
-
-```xml
-<style name="TextViewCustomFont">
-    <item name="android:fontFamily">@font/roboto_condensed_regular</item>
-</style>
-```
-
-### Custom font defined in Theme
-
-```xml
-<style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-    <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
-</style>
-
-<style name="AppTheme.Widget"/>
-
-<style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
-    <item name="android:fontFamily">@font/roboto_thinitalic</item>
-</style>
-```
-
-
 # FAQ
 
 ### Font Resolution 
