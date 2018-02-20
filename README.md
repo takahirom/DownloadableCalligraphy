@@ -38,7 +38,6 @@ https://developer.android.com/guide/topics/resources/font-resource.html
 ```xml
 <TextView android:fontFamily="@font/my_font"/>
 ``` 
-**Note: The missing namespace, this __IS__ intentional.**
 
 ### Installation
 
