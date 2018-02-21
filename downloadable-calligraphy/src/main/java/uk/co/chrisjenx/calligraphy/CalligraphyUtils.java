@@ -109,12 +109,19 @@ public final class CalligraphyUtils {
         return applyFontToTextView(context, textView, fontFamily, false);
     }
 
-    static boolean applyFontToTextView(final Context context, final TextView textView, final int fontFamily, boolean deferred) {
+    static boolean applyFontToTextView(final Context context, final TextView textView, final int fontFamilyRes, boolean deferred) {
         if (textView == null || context == null) return false;
-        if ("string".equals(context.getResources().getResourceTypeName(fontFamily))) {
+        if (!isFontResource(context, fontFamilyRes)) {
             return false;
         }
-        return TypefaceUtils.load(context, fontFamily, textView, deferred);
+        return TypefaceUtils.load(context, fontFamilyRes, textView, deferred);
+    }
+
+    static boolean isFontResource(Context context, int fontFamilyRes) {
+        if (fontFamilyRes == 0 || fontFamilyRes == -1) {
+            return false;
+        }
+        return !"string".equals(context.getResources().getResourceTypeName(fontFamilyRes));
     }
 
     static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config) {

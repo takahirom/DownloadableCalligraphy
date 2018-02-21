@@ -66,4 +66,7 @@
         <item name="android:textSize">@dimen/abc_text_size_small_material</item>
     </style>
 
+    <style name="EmptyStyle" >
+    </style>
+
 </resources>

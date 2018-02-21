@@ -134,7 +134,7 @@ class CalligraphyFactory {
             }
 
             // Try View TextAppearance
-            if (textViewFont == 0) {
+            if (!CalligraphyUtils.isFontResource(context, textViewFont)) {
                 textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mAttributeId);
             }
 

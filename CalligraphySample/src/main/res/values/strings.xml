@@ -9,6 +9,7 @@
     <string name="defined_in_style">\nThis has the font path defined in the style as Roboto Condensed.\n</string>
     <string name="defined_in_appears_style">\nThis has the font path defined in the Styles TextAppearance as Roboto Condensed.\n</string>
     <string name="defined_in_appears">\nThis has the font path defined in the Views TextAppearance as Oswald.\n</string>
+    <string name="defined_in_appears_with_empty_style">\nThis is custom TextView has the font path defined in the Views TextAppearance with empty styleas Oswald.\n</string>
     <string name="defined_in_appears_caps">\nThis has the font path defined in the Views TextAppearance as Oswald. textAllCaps is applied.\n</string>
     <string name="defined_custom_view">\nThis is a custom TextView with Oswald font.\n</string>
     <string name="defined_view_stub">\nThis is a TextView inflated from a ViewStub.\n</string>

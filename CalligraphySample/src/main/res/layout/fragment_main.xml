@@ -64,6 +64,15 @@
             android:textSize="24sp"
             />
 
+        <uk.co.chrisjenx.calligraphy.sample.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defined_in_appears_with_empty_style"
+            style="@style/EmptyStyle"
+            android:textAppearance="@style/TextAppearance.FontPathView"
+            android:textSize="24sp"
+            />
+
         <TextView
             android:id="@+id/my_text_appearance"
             android:layout_width="wrap_content"
