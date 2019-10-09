@@ -4,6 +4,7 @@
     <string name="app_name">Calligraphy</string>
     <string name="defined_gtw">\nThis is text set by the gtw style.\n</string>
     <string name="default_theme">\nThis is text set by the default theme fontFamily.\n</string>
+    <string name="default_theme_style_bold">\nThis is text set by the default theme fontFamily and textStyle is bold.\n</string>
     <string name="defined_fontfamily_view">\nThis has a font path set to Roboto Bold, on the View.\n</string>
     <string name="defined_incorrect">\nThis has a fontFamily set to a font file that does not exist, it goes back to the default.\n</string>
     <string name="defined_in_style">\nThis has the font path defined in the style as Roboto Condensed.\n</string>
