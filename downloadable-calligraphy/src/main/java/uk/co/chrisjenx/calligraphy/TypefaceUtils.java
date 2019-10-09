@@ -48,7 +48,7 @@ public final class TypefaceUtils {
                     if (view == null) {
                         return;
                     }
-                    view.setTypeface(typeface);
+                    view.setTypeface(typeface, view.getTypeface().getStyle());
                     if (deferred) {
                         view.setText(CalligraphyUtils.applyTypefaceSpan(view.getText(), typeface), TextView.BufferType.SPANNABLE);
                         view.addTextChangedListener(new TextWatcher() {
